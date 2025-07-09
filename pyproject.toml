@@ -127,7 +127,7 @@ python_files = ["test_*.py", "*_test.py"]
 python_functions = ["test_*"]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
+    "integration: marks tests as integration tests that hit real APIs",
 ]
 
 # Deptry configuration

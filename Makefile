@@ -61,7 +61,17 @@ release: clean test-coverage build upload
 # Integration Testing
 test-integration:
 	@echo "🔬 Testing OLS integration..."
-	uv run pytest tests/test_api.py -v
+	uv run pytest tests/test_integration.py -v -m integration
+
+# Run all unit tests (mocked)
+test-unit:
+	@echo "🧪 Running unit tests..."
+	uv run pytest tests/test_api.py tests/test_tools.py -v
+
+# Run integration tests that hit real API
+test-real-api:
+	@echo "🌐 Testing against real OLS API..."
+	uv run pytest tests/test_integration.py -v -m integration
 
 # MCP Server testing
 test-mcp:
