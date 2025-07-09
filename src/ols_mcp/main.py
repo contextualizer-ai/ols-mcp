@@ -4,15 +4,15 @@
 ################################################################################
 
 from fastmcp import FastMCP
+
 from ols_mcp.tools import (
-    search_all_ontologies,
     get_ontology_info,
-    get_terms_from_ontology
+    get_terms_from_ontology,
+    search_all_ontologies,
 )
 
-
 # Create the FastMCP instance at module level
-mcp = FastMCP("ols_mcp")
+mcp: FastMCP = FastMCP("ols_mcp")
 
 # Register all tools
 mcp.tool(search_all_ontologies)

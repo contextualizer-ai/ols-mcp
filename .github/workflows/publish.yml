@@ -1,0 +1,108 @@
+name: Build and Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags (v1.0.0, v0.8.1, etc.)
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Run tests
+        run: uv run pytest tests/
+
+  build-and-publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for hatch-vcs versioning
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install hatch
+        run: uv tool install hatch
+
+      - name: Build package with hatch
+        run: uv tool run hatch build
+
+      - name: Check package
+        run: |
+          uv tool install twine
+          uv tool run twine check dist/*
+
+      - name: Verify version matches tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          PACKAGE_VERSION=$(uv tool run hatch version)
+          echo "Tag version: $TAG_VERSION"
+          echo "Package version: $PACKAGE_VERSION"
+          if [ "$TAG_VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "Version mismatch! Tag: $TAG_VERSION, Package: $PACKAGE_VERSION"
+            exit 1
+          fi
+
+      - name: Publish to PyPI (using token-based auth)
+        if: "!contains(github.ref, 'test') && !contains(github.ref, 'dryrun')"
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verify-metadata: true
+          verbose: true
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Publish to TestPyPI (using token-based auth)
+        if: "contains(github.ref, 'test') && !contains(github.ref, 'dryrun')"
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          verify-metadata: true
+          verbose: true
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+
+      - name: Dry run (build only)
+        if: "contains(github.ref, 'dryrun')"
+        run: |
+          echo "Dry run mode - would publish these files:"
+          ls -la dist/
+          echo "Package contents:"
+          uv tool run twine check dist/* --verbose
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-artifacts-${{ github.ref_name }}
+          path: dist/

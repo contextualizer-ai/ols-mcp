@@ -3,22 +3,24 @@
 # This module contains tools that consume the generic API wrapper functions in
 # ols_mcp/api.py and constrain/transform them based on use cases/applications
 ################################################################################
-from typing import Any, Dict, List, Optional
-from .api import search_ontologies, get_ontology_details, get_ontology_terms
+from typing import Any
+
+from .api import get_ontology_details, get_ontology_terms, search_ontologies
 
 
 def search_all_ontologies(
     query: str,
-    ontologies: Optional[str] = None,
+    ontologies: str | None = None,
     max_results: int = 20,
-    exact: bool = False
-) -> List[Dict[str, Any]]:
+    exact: bool = False,
+) -> list[dict[str, Any]]:
     """
     Search across all ontologies in the Ontology Lookup Service (OLS).
 
     Args:
         query (str): The search term to look for
-        ontologies (str, optional): Comma-separated list of ontology IDs to search within (e.g., "go,uberon")
+        ontologies (str, optional): Comma-separated list of ontology IDs to search
+            within (e.g., "go,uberon")
         max_results (int): Maximum number of results to return (default: 20)
         exact (bool): Whether to perform exact matching (default: False)
 
@@ -28,15 +30,15 @@ def search_all_ontologies(
     ontology_list = None
     if ontologies:
         ontology_list = [ont.strip() for ont in ontologies.split(",")]
-    
+
     results = search_ontologies(
         query=query,
         ontologies=ontology_list,
         max_results=max_results,
         exact=exact,
-        verbose=True
+        verbose=True,
     )
-    
+
     # Simplify the results for easier consumption
     simplified_results = []
     for result in results:
@@ -52,11 +54,11 @@ def search_all_ontologies(
             "type": result.get("type"),
         }
         simplified_results.append(simplified)
-    
+
     return simplified_results
 
 
-def get_ontology_info(ontology_id: str) -> Dict[str, Any]:
+def get_ontology_info(ontology_id: str) -> dict[str, Any]:
     """
     Get detailed information about a specific ontology.
 
@@ -67,7 +69,7 @@ def get_ontology_info(ontology_id: str) -> Dict[str, Any]:
         Dict[str, Any]: Dictionary containing detailed ontology information
     """
     details = get_ontology_details(ontology_id=ontology_id, verbose=True)
-    
+
     # Extract key information for easier consumption
     config = details.get("config", {})
     simplified = {
@@ -85,19 +87,19 @@ def get_ontology_info(ontology_id: str) -> Dict[str, Any]:
         "updated": details.get("updated"),
         "loaded": details.get("loaded"),
         "file_location": config.get("fileLocation"),
-        "base_uris": config.get("baseUris", [])
+        "base_uris": config.get("baseUris", []),
     }
-    
+
     return simplified
 
 
 def get_terms_from_ontology(
     ontology_id: str,
     max_results: int = 20,
-    iri: Optional[str] = None,
-    short_form: Optional[str] = None,
-    obo_id: Optional[str] = None
-) -> List[Dict[str, Any]]:
+    iri: str | None = None,
+    short_form: str | None = None,
+    obo_id: str | None = None,
+) -> list[dict[str, Any]]:
     """
     Get classes/terms from a specific ontology.
 
@@ -117,9 +119,9 @@ def get_terms_from_ontology(
         iri=iri,
         short_form=short_form,
         obo_id=obo_id,
-        verbose=True
+        verbose=True,
     )
-    
+
     # Simplify the results for easier consumption
     simplified_terms = []
     for term in terms:
@@ -139,5 +141,5 @@ def get_terms_from_ontology(
             "is_root": term.get("is_root", False),
         }
         simplified_terms.append(simplified)
-    
+
     return simplified_terms
