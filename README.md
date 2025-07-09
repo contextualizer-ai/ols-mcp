@@ -154,7 +154,7 @@ make test-real-api
 uv run pytest tests/ -v -k "test_search"
 ```
 
-### Code Quality
+#### Code Quality Tools
 
 The project uses modern Python tooling:
 
