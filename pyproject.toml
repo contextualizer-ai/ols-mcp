@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ols-mcp"
+version = "0.1.0"
+description = "MCP for retrieving things from the Ontology Lookup  Service"
+readme = "README.md"
+authors = [
+    {name = "Justin Reese", email = "justinreese@lbl.gov"},
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.7.1",
+    "requests>=2.32.4",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "black",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/justaddcoffee/ols-mcp"
+"Bug Tracker" = "https://github.com/justaddcoffee/ols-mcp/issues"
+
+[project.scripts]
+ols-mcp = "ols_mcp.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ols_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
