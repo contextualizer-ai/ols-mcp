@@ -1,36 +1,145 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
 name = "ols-mcp"
-version = "0.1.0"
-description = "MCP for retrieving things from the Ontology Lookup  Service"
+dynamic = ["version"]
+description = "MCP for retrieving things from the Ontology Lookup Service"
 readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
 authors = [
     {name = "Justin Reese", email = "justinreese@lbl.gov"},
 ]
-requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["mcp", "ontology", "ols", "bioinformatics"]
+
+# Main dependencies
 dependencies = [
     "fastmcp>=2.7.1",
     "requests>=2.32.4",
 ]
 
+# Development dependencies - all dev tools in one group
 [dependency-groups]
 dev = [
-  "pytest",
-  "black",
+    # Code quality and formatting
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    # Testing
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    # Build and packaging tools
+    "hatch-vcs>=0.5.0",
+    "hatchling>=1.27.0",
+    "twine>=4.0.0",
+    "hatch>=1.14.1",
+    "types-requests>=2.32.4.20250611",
+    "pip>=25.1.1",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/justaddcoffee/ols-mcp"
-"Bug Tracker" = "https://github.com/justaddcoffee/ols-mcp/issues"
+Homepage = "https://github.com/justaddcoffee/ols-mcp"
+Repository = "https://github.com/justaddcoffee/ols-mcp"
+Issues = "https://github.com/justaddcoffee/ols-mcp/issues"
+Documentation = "https://github.com/justaddcoffee/ols-mcp#readme"
 
 [project.scripts]
 ols-mcp = "ols_mcp.main:main"
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/ols_mcp/_version.py"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/ols_mcp"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "src",
+    "tests",
+    "README.md",
+    "pyproject.toml",
+]
+
+# Ruff configuration
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = ["src/ols_mcp/_version.py"]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# Black configuration (if you prefer black over ruff format)
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.11"
+warn_unused_configs = true
+show_error_codes = true
+# Ignore missing stubs for third-party libraries
+ignore_missing_imports = true
+# Be less strict about Any returns from third-party libraries
+warn_return_any = false
+# Allow some untyped functions for now
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+# Pytest configuration
 [tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests that hit real APIs",
+]
+
+# Deptry configuration
+[tool.deptry]
+# Map import names to package names
+[tool.deptry.package_module_name_map]
+pytest_asyncio = "pytest-asyncio"
+pytest_cov = "pytest-cov"
+hatch_vcs = "hatch-vcs"
+types_requests = "types-requests"
+
+# Ignore specific error types for known false positives
+[tool.deptry.per_rule_ignores]
+DEP001 = ["ols_mcp"]  # Missing deps: self-imports ok
+DEP002 = ["black", "ruff", "mypy", "pytest", "pytest-asyncio", "pytest-cov", "hatch-vcs", "hatchling", "twine", "hatch", "types-requests", "pip"]  # Dev dependencies not used in main code

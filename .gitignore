@@ -46,3 +46,6 @@ venv.bak/
 *.swp
 *.swo
 .claude
+
+# Auto-generated version file
+src/ols_mcp/_version.py
