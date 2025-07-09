@@ -9,6 +9,7 @@ description = "MCP for retrieving things from the Ontology Lookup Service"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}
+license-expression = "MIT"
 authors = [
     {name = "Justin Reese", email = "justinreese@lbl.gov"},
 ]
