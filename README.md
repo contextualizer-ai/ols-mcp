@@ -1,6 +1,8 @@
 # ols-mcp
 
-A Model Context Protocol (MCP) server for retrieving information from the Ontology Lookup Service (OLS). This package provides tools for searching ontologies, retrieving ontology details, and accessing ontology terms through a standardized MCP interface.
+A Model Context Protocol (MCP) server for retrieving information from the Ontology Lookup Service (OLS). 
+
+This package provides tools for searching ontologies, retrieving ontology details, and accessing ontology terms through a standardized MCP interface.
 
 ## Installation
 
@@ -145,15 +147,15 @@ uv sync --group dev
 #### Testing
 - `make test-unit` - Run unit tests (fast, mocked)
 - `make test-real-api` - Run integration tests against live OLS API
-- `make test-coverage` - Run all tests with coverage report
-- `make test-integration` - Run integration tests
 - `make test-mcp` - Test MCP protocol functionality
 
-#### Code Quality
+#### Code Quality and Maintenance
 - `make format` - Format code with Black
 - `make lint` - Run Ruff linter with fixes
 - `make mypy` - Run type checking
 - `make deptry` - Check for unused dependencies
+- `make test-coverage` - Run all tests with coverage report
+- `make test-integration` - Run integration tests
 
 #### Build & Release
 - `make build` - Build package distributions
@@ -181,7 +183,7 @@ make test-real-api
 uv run pytest tests/ -v -k "test_search"
 ```
 
-### Code Quality
+#### Code Quality Tools
 
 The project uses modern Python tooling:
 
