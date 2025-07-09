@@ -82,10 +82,39 @@ terms = get_terms_from_ontology("go", max_results=10)
 
 ### CLI Usage
 
+#### Running the MCP Server
+
 Run the MCP server directly:
 
 ```bash
 ols-mcp
+```
+
+#### Testing Individual Tools
+
+You can test the tools directly using Python:
+
+```bash
+# Search for biological terms across all ontologies
+uv run python -c "from ols_mcp.tools import search_all_ontologies; print(search_all_ontologies('apoptosis', max_results=3))"
+
+# Get information about Gene Ontology
+uv run python -c "from ols_mcp.tools import get_ontology_info; print(get_ontology_info('go'))"
+
+# Get terms from a specific ontology
+uv run python -c "from ols_mcp.tools import get_terms_from_ontology; print(get_terms_from_ontology('go', max_results=3))"
+```
+
+#### MCP Protocol Testing
+
+Test the MCP protocol directly:
+
+```bash
+# Test basic protocol handshake
+make test-mcp
+
+# Test extended protocol with tool calls
+make test-mcp-extended
 ```
 
 ## Development
