@@ -90,7 +90,7 @@ test-mcp-extended:
 	 echo '{"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}}'; \
 	 sleep 0.1; \
 	 echo '{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "search_all_ontologies", "arguments": {"query": "cancer", "max_results": 3}}, "id": 2}') | \
-	uv run python src/ols_mcp/main.py
+	timeout 30 uv run python src/ols_mcp/main.py
 
 # OLS MCP - Claude Desktop config:
 #   Add to ~/Library/Application Support/Claude/claude_desktop_config.json:
