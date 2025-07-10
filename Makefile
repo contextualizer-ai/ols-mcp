@@ -81,7 +81,7 @@ test-mcp:
 	 echo '{"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}}'; \
 	 sleep 0.1; \
 	 echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 2}') | \
-	uv run --timeout 30 python src/ols_mcp/main.py
+	timeout 30 uv run python src/ols_mcp/main.py
 
 test-mcp-extended:
 	@echo "Testing MCP protocol with tool execution..."
