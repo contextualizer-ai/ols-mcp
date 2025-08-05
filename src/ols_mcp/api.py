@@ -149,13 +149,12 @@ def get_ontology_terms(
 
     return result
 
-def get_similar_terms(iri: str | None,
-    ontology: str | None,
+def get_similar_terms(iri: str,
+    ontology: str,
     max_results: int = 20,
     page_size: int = 20,
     verbose: bool = False):
-    if iri is not None:
-        iri = urllib.parse.quote(urllib.parse.quote(iri, safe=''), safe='')
+    iri = urllib.parse.quote(urllib.parse.quote(iri, safe=''), safe='')
     base_url = f"https://www.ebi.ac.uk/ols/api/v2/ontologies/{ontology.lower()}/classes/{iri}/llm_similar"
 
     params: dict[str, Any] = {"size": min(page_size, max_results)}
