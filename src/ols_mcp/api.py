@@ -2,10 +2,11 @@
 # ols_mcp/api.py
 # This module contains wrapper functions that interact with the OLS API endpoints
 ################################################################################
+import urllib.parse
 from typing import Any
 
 import requests
-import urllib.parse
+
 
 def search_ontologies(
     query: str,

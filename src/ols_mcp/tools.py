@@ -178,12 +178,11 @@ def get_similar_ontology_terms(
             elif isinstance(term.get("definition")[0], dict):
                 definition = term.get("definition")[0].get("value", "")
         simplified = {
-            "id": term.get("curie"),
-            "iri": term.get("iri"),
+            "id": term.get("curie", ""),
+            "iri": term.get("iri", ""),
             "label": term.get("label")[0] if len(term.get("label")) > 0 else "",
             "definition": definition,
             "score": term.get("score", -999)
         }
-    simplified_terms.append(simplified)
-
+        simplified_terms.append(simplified)
     return simplified_terms

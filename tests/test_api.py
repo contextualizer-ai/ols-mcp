@@ -1,7 +1,12 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from ols_mcp.api import get_ontology_details, get_ontology_terms, get_similar_terms, search_ontologies
+from ols_mcp.api import (
+    get_ontology_details,
+    get_ontology_terms,
+    get_similar_terms,
+    search_ontologies,
+)
 
 
 class TestOLSAPI(unittest.TestCase):

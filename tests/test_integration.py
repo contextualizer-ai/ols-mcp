@@ -4,6 +4,7 @@ import pytest
 
 from ols_mcp.tools import (
     get_ontology_info,
+    get_similar_ontology_terms,
     get_terms_from_ontology,
     search_all_ontologies,
 )
@@ -201,6 +202,22 @@ class TestOLSIntegration(unittest.TestCase):
                         self.assertIsInstance(result["label"], str)
                     if result["ontology_name"] is not None:
                         self.assertIsInstance(result["ontology_name"], str)
+
+    @pytest.mark.integration
+    def test_robust_get_similar_terms(self):
+        """Test get similar terms for target."""
+
+        results = get_similar_ontology_terms("http://purl.obolibrary.org/obo/HP_0001166", "hp", max_results=5)
+        self.assertIsInstance(results, list)
+        self.assertEqual(len(results), 5, "Should find max results for 'HP_0001166'")
+
+        # Validate result structure
+        for result in results:
+            # Some results might have None values, check accordingly
+            if result["id"] is not None:
+                self.assertIsInstance(result["id"], str)
+            if result["label"] is not None:
+                self.assertIsInstance(result["label"], str)
 
 
 if __name__ == "__main__":
