@@ -13,7 +13,13 @@ from ols_mcp.tools import (
 )
 
 # Create the FastMCP instance at module level
-mcp: FastMCP = FastMCP("ols_mcp")
+mcp: FastMCP = FastMCP("Ontology Lookup Service (OLS) MCP" ,
+                       instructions="""
+                        This server provides tools to interact with the OLS API.
+                        You can search for ontologies, retrieve information about them,
+                        get terms from specific ontologies, and find similar terms across ontologies.
+                        Use the available commands to explore and retrieve data from OLS.
+                    """)
 
 # Register all tools
 mcp.tool(search_all_ontologies)
