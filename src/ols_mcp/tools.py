@@ -5,7 +5,12 @@
 ################################################################################
 from typing import Any
 
-from .api import get_ontology_details, get_ontology_terms, search_ontologies
+from .api import (
+    get_ontology_details,
+    get_ontology_terms,
+    get_similar_terms,
+    search_ontologies,
+)
 
 
 def search_all_ontologies(
@@ -142,4 +147,42 @@ def get_terms_from_ontology(
         }
         simplified_terms.append(simplified)
 
+    return simplified_terms
+
+def get_similar_ontology_terms(
+    ontology_iri: str,
+    ontology: str,
+    max_results: int = 20,
+    page_size: int = 20
+):
+    """Get similar ontology terms by llm embedding similarity.
+
+    Args:
+        ontology_iri (str): The IRI of the ontology term (e.g., 'http://purl.obolibrary.org/obo/GO_0008150')
+        ontology (str): The name of the ontology (e.g., 'go', 'uberon')
+        max_results (int, optional): Maximum number of results. Defaults to 20.
+        page_size (int, optional): Number of results to return per page. Defaults to 20.
+
+    Returns:
+        list[dict[str, Any]]: A list of dictionaries containing similar ontology terms.
+    """
+    terms = get_similar_terms(iri=ontology_iri, ontology=ontology,
+                              max_results=max_results,
+                              page_size=page_size, verbose=False)
+    simplified_terms = []
+    for term in terms:
+        definition = ""
+        if len(term.get("definition", [])) > 0:
+            if isinstance(term.get("definition")[0], str):
+                definition = term.get("definition")[0]
+            elif isinstance(term.get("definition")[0], dict):
+                definition = term.get("definition")[0].get("value", "")
+        simplified = {
+            "id": term.get("curie", ""),
+            "iri": term.get("iri", ""),
+            "label": term.get("label")[0] if len(term.get("label")) > 0 else "",
+            "definition": definition,
+            "score": term.get("score", -999)
+        }
+        simplified_terms.append(simplified)
     return simplified_terms

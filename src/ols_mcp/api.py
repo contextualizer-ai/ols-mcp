@@ -2,6 +2,7 @@
 # ols_mcp/api.py
 # This module contains wrapper functions that interact with the OLS API endpoints
 ################################################################################
+import urllib.parse
 from typing import Any
 
 import requests
@@ -49,7 +50,6 @@ def search_ontologies(
 
     return results
 
-
 def get_ontology_details(ontology_id: str, verbose: bool = False) -> dict[str, Any]:
     """
     Get details about a specific ontology.
@@ -74,7 +74,6 @@ def get_ontology_details(ontology_id: str, verbose: bool = False) -> dict[str, A
         print(f"Retrieved details for {ontology_id}")
 
     return data
-
 
 def get_ontology_terms(
     ontology_id: str,
@@ -147,5 +146,58 @@ def get_ontology_terms(
 
     if verbose:
         print(f"Retrieved {len(result)} terms from {ontology_id}")
+
+    return result
+
+def get_similar_terms(iri: str,
+    ontology: str,
+    max_results: int = 20,
+    page_size: int = 20,
+    verbose: bool = False):
+    iri = urllib.parse.quote(urllib.parse.quote(iri, safe=''), safe='')
+    base_url = f"https://www.ebi.ac.uk/ols/api/v2/ontologies/{ontology.lower()}/classes/{iri}/llm_similar"
+
+    params: dict[str, Any] = {"size": min(page_size, max_results)}
+
+    all_terms: list[dict[str, Any]] = []
+    page = 0
+
+    while len(all_terms) < max_results:
+        params["page"] = page
+
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()
+        data = response.json()
+
+        terms = data.get("elements", [])
+        if not terms:
+            break
+
+        all_terms.extend(terms)
+
+        if verbose:
+            print(f"Fetched page {page + 1}, total terms so far: {len(all_terms)}")
+
+        # Check if we have more pages
+        page_info = data.get("page", {})
+        if isinstance(page_info, dict):
+            current_page = page_info.get("number", 0)
+            total_pages = page_info.get("totalPages", 1)
+        else:
+            # Handle case where page is a simple integer
+            current_page = page_info
+            total_pages = data.get("totalPages", 1)
+
+        if current_page >= total_pages - 1:
+            break
+
+        page += 1
+
+    # Filter out exact curies from results
+    all_terms = [term for term in all_terms if not
+                 term.get("score", 0) >= .99 or
+                 term.get("curie", "NONE:999").replace(":", "_") not in iri]
+    # Truncate to max_results
+    result = all_terms[:max_results]
 
     return result
