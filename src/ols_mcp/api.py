@@ -180,10 +180,16 @@ def get_similar_terms(iri: str | None,
             print(f"Fetched page {page + 1}, total terms so far: {len(all_terms)}")
 
         # Check if we have more pages
-        if (
-            not data.get("page", 0)
-            < data.get("totalPages", 1) - 1
-        ):
+        page_info = data.get("page", {})
+        if isinstance(page_info, dict):
+            current_page = page_info.get("number", 0)
+            total_pages = page_info.get("totalPages", 1)
+        else:
+            # Handle case where page is a simple integer
+            current_page = page_info
+            total_pages = data.get("totalPages", 1)
+        
+        if current_page >= total_pages - 1:
             break
 
         page += 1
