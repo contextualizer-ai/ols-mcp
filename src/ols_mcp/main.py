@@ -17,8 +17,8 @@ mcp: FastMCP = FastMCP("Ontology Lookup Service (OLS) MCP" ,
                        instructions="""
                         This server provides tools to interact with the OLS API.
                         You can search for ontologies, retrieve information about them,
-                        get terms from specific ontologies, and find similar terms across ontologies.
-                        Use the available commands to explore and retrieve data from OLS.
+                        get terms from specific ontologies, and find similar terms.
+                        Use the available commands to explore and retrieve data.
                     """)
 
 # Register all tools

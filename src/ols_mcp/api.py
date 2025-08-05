@@ -188,7 +188,7 @@ def get_similar_terms(iri: str | None,
             # Handle case where page is a simple integer
             current_page = page_info
             total_pages = data.get("totalPages", 1)
-        
+
         if current_page >= total_pages - 1:
             break
 

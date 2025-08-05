@@ -367,11 +367,11 @@ class TestOLSTools(unittest.TestCase):
             "definedBy" : [ "ido", "go" ],
             "definition" : [ {
             "type" : [ "reification" ],
-            "value" : "A biological process is the execution of a genetically-encoded biological module or program. It consists of all the steps required to achieve the specific biological objective of the module. A biological process is accomplished by a particular set of molecular functions carried out by specific gene products (or macromolecular complexes), often in a highly regulated manner and in a particular temporal sequence.",
+            "value" : "A biological process is the execution of a genetically-encoded biological module or program. It consists of all the steps required to achieve the specific biological objective of the module. A biological process is accomplished by a particular set of molecular functions carried out by specific gene products (or macromolecular complexes), often in a highly regulated manner and in a particular temporal sequence.",  # noqa: E501
             "axioms" : [ {
-                "http://www.geneontology.org/formats/oboInOwl#hasDbXref" : "GOC:pdt"
+                "http://www.geneontology.org/formats/oboInOwl#hasDbXref" : "GOC:pdt"  # noqa: E501
             } ]
-            }, "Note that, in addition to forming the root of the biological process ontology, this term is recommended for the annotation of gene products whose biological process is unknown. When this term is used for annotation, it indicates that no information was available about the biological process of the gene product annotated as of the date the annotation was made; the evidence code 'no data' (ND), is used to indicate this." ],
+            }, "Note that, in addition to forming the root of the biological process ontology, this term is recommended for the annotation of gene products whose biological process is unknown. When this term is used for annotation, it indicates that no information was available about the biological process of the gene product annotated as of the date the annotation was made; the evidence code 'no data' (ND), is used to indicate this." ],  # noqa: E501
             "definitionProperty" : [ "http://purl.obolibrary.org/obo/IAO_0000115", "http://www.w3.org/2000/01/rdf-schema#comment" ],
             "directAncestor" : [ "http://purl.obolibrary.org/obo/BFO_0000015", "http://purl.obolibrary.org/obo/BFO_0000003" ],
             "directParent" : [ "http://purl.obolibrary.org/obo/BFO_0000015" ],
@@ -422,7 +422,7 @@ class TestOLSTools(unittest.TestCase):
                 "appearsIn" : [ "bao" ],
                 "curie" : "BAO:0000264",
                 "definedBy" : [ "bao" ],
-                "definition" : [ "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO)." ],
+                "definition" : [ "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO)." ],  # noqa: E501
                 "definitionProperty" : "http://purl.obolibrary.org/obo/IAO_0000115",
                 "directAncestor" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
                 "directParent" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
@@ -450,7 +450,7 @@ class TestOLSTools(unittest.TestCase):
                 "searchableAnnotationValues" : [ True ],
                 "shortForm" : "BAO_0000264",
                 "type" : [ "class", "entity" ],
-                "http://purl.obolibrary.org/obo/IAO_0000115" : "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",
+                "http://purl.obolibrary.org/obo/IAO_0000115" : "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",  # noqa: E501
                 "http://purl.obolibrary.org/obo/deprecated" : "true",
                 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : "http://www.w3.org/2002/07/owl#Class",
                 "http://www.w3.org/2000/01/rdf-schema#label" : "biological process",
@@ -467,7 +467,7 @@ class TestOLSTools(unittest.TestCase):
             "id": "BAO:0000264",
             "iri": "http://www.bioassayontology.org/bao#BAO_0000264",
             "label": "biological process",
-            "definition": "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",
+            "definition": "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",  # noqa: E501
             "score":  0.9899990558624268
         }]
         self.assertEqual(len(result), 1)

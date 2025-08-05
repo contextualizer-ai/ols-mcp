@@ -160,8 +160,8 @@ def get_similar_ontology_terms(
     Args:
         ontology_iri (str): The IRI of the ontology term (e.g., 'http://purl.obolibrary.org/obo/GO_0008150')
         ontology (str): The name of the ontology (e.g., 'go', 'uberon')
-        max_results (int, optional): The maximum number of results to return. Defaults to 20.
-        page_size (int, optional): The number of results to return per page. Defaults to 20.
+        max_results (int, optional): Maximum number of results. Defaults to 20.
+        page_size (int, optional): Number of results to return per page. Defaults to 20.
 
     Returns:
         list[dict[str, Any]]: A list of dictionaries containing similar ontology terms.
