@@ -7,6 +7,7 @@ from fastmcp import FastMCP
 
 from ols_mcp.tools import (
     get_ontology_info,
+    get_similar_ontology_terms,
     get_terms_from_ontology,
     search_all_ontologies,
 )
@@ -18,7 +19,7 @@ mcp: FastMCP = FastMCP("ols_mcp")
 mcp.tool(search_all_ontologies)
 mcp.tool(get_ontology_info)
 mcp.tool(get_terms_from_ontology)
-
+mcp.tool(get_similar_ontology_terms)
 
 def main():
     """Main entry point for the application."""

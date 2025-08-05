@@ -1,8 +1,9 @@
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from ols_mcp.tools import (
     get_ontology_info,
+    get_similar_ontology_terms,
     get_terms_from_ontology,
     search_all_ontologies,
 )
@@ -353,6 +354,124 @@ class TestOLSTools(unittest.TestCase):
         }
         self.assertEqual(result[0], expected_result)
 
+
+    @patch("ols_mcp.api.requests.get")
+    def test_get_similar_terms_for_ontology_id(self, mock_get_terms):
+        """Test get_similar_terms_for_ontology_id"""
+        # Mock response with missing fields
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "elements": [{
+            "appearsIn" : [ "clo", "upa", "stato", "xpo", "gallont", "peco", "envo", "fbbt", "po", "rbo", "hp", "gaz", "omrse", "cteno", "eupath", "hcao", "vsao", "poro", "geno", "plana", "msio", "oae", "phipo", "hba", "dpo", "oostt", "caro", "cl", "mro", "efo", "obib", "omit", "idomal", "fovt", "ado", "ro", "pcl", "psdo", "cco", "opl", "uberon", "rexo", "planp", "ohd", "one", "ppo", "eco", "vbo", "genepio", "sepio", "foodon", "ceph", "chiro", "omp", "mp", "go", "cido", "iceo", "wbbt", "htn", "dhba", "mpio", "zp", "bao", "aism", "ino", "pso", "mfmo", "to", "pco", "dideo", "wbls", "upheno", "bmont", "ecto", "dron", "ohmi", "ecao", "gecko", "bcio", "cmpo", "fbbi", "maxo", "bspo", "ecocore", "swo", "pato", "covoc", "pride", "ido", "agro", "omiabis", "mondo", "ohpi", "mco", "obcs", "fypo", "apollo_sv", "ons", "fbdv", "wbphenotype", "obi", "vo", "pr", "reto", "ogsf", "nbo", "oba", "ontoneo", "tao", "idocovid19", "flopo", "ncro", "epio", "bcgo", "micro", "gexo", "cob", "slso", "gsso" ],
+            "curie" : "GO:0008150",
+            "definedBy" : [ "ido", "go" ],
+            "definition" : [ {
+            "type" : [ "reification" ],
+            "value" : "A biological process is the execution of a genetically-encoded biological module or program. It consists of all the steps required to achieve the specific biological objective of the module. A biological process is accomplished by a particular set of molecular functions carried out by specific gene products (or macromolecular complexes), often in a highly regulated manner and in a particular temporal sequence.",
+            "axioms" : [ {
+                "http://www.geneontology.org/formats/oboInOwl#hasDbXref" : "GOC:pdt"
+            } ]
+            }, "Note that, in addition to forming the root of the biological process ontology, this term is recommended for the annotation of gene products whose biological process is unknown. When this term is used for annotation, it indicates that no information was available about the biological process of the gene product annotated as of the date the annotation was made; the evidence code 'no data' (ND), is used to indicate this." ],
+            "definitionProperty" : [ "http://purl.obolibrary.org/obo/IAO_0000115", "http://www.w3.org/2000/01/rdf-schema#comment" ],
+            "directAncestor" : [ "http://purl.obolibrary.org/obo/BFO_0000015", "http://purl.obolibrary.org/obo/BFO_0000003" ],
+            "directParent" : [ "http://purl.obolibrary.org/obo/BFO_0000015" ],
+            "hasDirectChildren" : True,
+            "hasDirectParents" : True,
+            "hasHierarchicalChildren" : True,
+            "hasHierarchicalParents" : True,
+            "hierarchicalAncestor" : [ "http://purl.obolibrary.org/obo/BFO_0000015", "http://purl.obolibrary.org/obo/BFO_0000003" ],
+            "hierarchicalParent" : [ "http://purl.obolibrary.org/obo/BFO_0000015" ],
+            "hierarchicalProperty" : "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+            "imported" : False,
+            "iri" : "http://purl.obolibrary.org/obo/GO_0008150",
+            "isDefiningOntology" : True,
+            "isObsolete" : False,
+            "isPreferredRoot" : True,
+            "label" : [ "biological_process" ],
+            "linkedEntities" : {
+            "http://www.w3.org/2001/XMLSchema#anyURI" : {
+                "numAppearsIn" : 1.0,
+                "hasLocalDefinition" : False,
+                "type" : [ "class", "entity" ],
+                "label" : [ "anyURI" ],
+                "curie" : "anyURI"
+            }
+            },
+            "linksTo" : [ "http://www.geneontology.org/formats/oboInOwl#creation_date", "http://www.w3.org/2001/XMLSchema#anyURI", "http://purl.obolibrary.org/obo/BFO_0000015", "http://purl.obolibrary.org/obo/GO_0050789", "http://www.geneontology.org/formats/oboInOwl#hasExactSynonym", "http://purl.obolibrary.org/obo/GO_0000004", "http://www.geneontology.org/formats/oboInOwl#hasDbXref", "http://purl.obolibrary.org/obo/go#goslim_pombe", "http://purl.obolibrary.org/obo/RO_0002211", "http://purl.obolibrary.org/obo/GO_0044003", "http://purl.obolibrary.org/obo/RO_0002212", "http://purl.obolibrary.org/obo/RO_0002010", "http://purl.obolibrary.org/obo/go#goslim_chembl", "http://www.geneontology.org/formats/oboInOwl#id", "http://purl.obolibrary.org/obo/UBERON_0000062", "http://purl.obolibrary.org/obo/GO_0008150", "http://www.w3.org/2000/01/rdf-schema#subClassOf", "http://www.geneontology.org/formats/oboInOwl#inSubset", "http://purl.obolibrary.org/obo/go#goslim_metagenomics", "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace", "http://purl.obolibrary.org/obo/go#goslim_candida", "http://purl.obolibrary.org/obo/go#goslim_plant", "http://www.w3.org/2000/01/rdf-schema#comment", "http://purl.obolibrary.org/obo/go#goslim_pir", "http://purl.obolibrary.org/obo/IAO_0000115", "http://purl.obolibrary.org/obo/IAO_0000233", "http://purl.obolibrary.org/obo/go#goslim_yeast", "http://www.geneontology.org/formats/oboInOwl#created_by", "http://purl.obolibrary.org/obo/GO_0044699", "http://purl.obolibrary.org/obo/GO_0007582", "http://purl.obolibrary.org/obo/RO_0002213", "http://purl.obolibrary.org/obo/GO_0048519", "http://purl.obolibrary.org/obo/GO_0048518", "http://purl.obolibrary.org/obo/RO_0002215", "http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym", "http://www.w3.org/2000/01/rdf-schema#label", "http://purl.obolibrary.org/obo/BFO_0000003", "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId" ],
+            "numDescendants" : 25698.0,
+            "numHierarchicalDescendants" : 27870.0,
+            "ontologyId" : "go",
+            "ontologyIri" : "http://purl.obolibrary.org/obo/go/extensions/go-plus.owl",
+            "ontologyPreferredPrefix" : "GO",
+            "relatedFrom" : [ {
+                "property" : "http://purl.obolibrary.org/obo/RO_0002215",
+                "value" : "http://purl.obolibrary.org/obo/UBERON_0000062",
+                "type" : [ "related" ],
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : "http://www.w3.org/2002/07/owl#Restriction",
+                "http://www.w3.org/2002/07/owl#onProperty" : "http://purl.obolibrary.org/obo/RO_0002215",
+                "http://www.w3.org/2002/07/owl#someValuesFrom" : "http://purl.obolibrary.org/obo/GO_0008150",
+                "isObsolete" : False
+            }],
+            "score" : 0.9998359680175781,
+            "searchableAnnotationValues" : [ False ],
+            "shortForm" : "GO_0008150",
+            "synonym" : [ "biological process", "physiological process", "single organism process", "single-organism process" ],
+            "synonymProperty" : [ "http://www.geneontology.org/formats/oboInOwl#hasExactSynonym", "http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym" ],
+            "type" : [ "class", "entity" ],
+            }, {
+                "appearsIn" : [ "bao" ],
+                "curie" : "BAO:0000264",
+                "definedBy" : [ "bao" ],
+                "definition" : [ "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO)." ],
+                "definitionProperty" : "http://purl.obolibrary.org/obo/IAO_0000115",
+                "directAncestor" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
+                "directParent" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
+                "hasDirectChildren" : False,
+                "hasDirectParents" : True,
+                "hasHierarchicalChildren" : False,
+                "hasHierarchicalParents" : True,
+                "hierarchicalAncestor" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
+                "hierarchicalParent" : [ "http://www.bioassayontology.org/bao#BAO_0003114" ],
+                "hierarchicalProperty" : "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+                "imported" : True,
+                "iri" : "http://www.bioassayontology.org/bao#BAO_0000264",
+                "isDefiningOntology" : True,
+                "isObsolete" : False,
+                "isPreferredRoot" : False,
+                "label" : [ "biological process" ],
+                "linkedEntities" : {},
+                "linksTo" : [ "http://www.w3.org/2000/01/rdf-schema#subClassOf", "http://purl.obolibrary.org/obo/deprecated", "http://www.bioassayontology.org/bao#BAO_0003114", "http://www.w3.org/2000/01/rdf-schema#label", "http://purl.obolibrary.org/obo/IAO_0000115" ],
+                "numDescendants" : 0.0,
+                "numHierarchicalDescendants" : 0.0,
+                "ontologyId" : "bao",
+                "ontologyIri" : "http://www.bioassayontology.org/bao/bao_complete.owl",
+                "ontologyPreferredPrefix" : "BAO",
+                "score" : 0.9899990558624268,
+                "searchableAnnotationValues" : [ True ],
+                "shortForm" : "BAO_0000264",
+                "type" : [ "class", "entity" ],
+                "http://purl.obolibrary.org/obo/IAO_0000115" : "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",
+                "http://purl.obolibrary.org/obo/deprecated" : "true",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : "http://www.w3.org/2002/07/owl#Class",
+                "http://www.w3.org/2000/01/rdf-schema#label" : "biological process",
+                "http://www.w3.org/2000/01/rdf-schema#subClassOf" : "http://www.bioassayontology.org/bao#BAO_0003114"
+            }],
+            "page": {"number": 0, "totalPages": 1}
+        }
+        mock_get_terms.raise_for_status.return_value = None
+        mock_get_terms.return_value = mock_response
+        result = get_similar_ontology_terms("http://purl.obolibrary.org/obo/GO_0008150", "GO")
+
+        # Verify missing fields are handled with defaults
+        expected_result = [{
+            "id": "BAO:0000264",
+            "iri": "http://www.bioassayontology.org/bao#BAO_0000264",
+            "label": "biological process",
+            "definition": "Any process specifically pertinent to the functioning of integrated living units: cells, tissues, organs, and organisms. A process is a collection of molecular events with a defined beginning and end (from GO).",
+            "score":  0.9899990558624268
+        }]
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result, expected_result)
 
 if __name__ == "__main__":
     unittest.main()
